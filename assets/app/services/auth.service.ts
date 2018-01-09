@@ -13,7 +13,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class AuthService {
 
-  BASE_URL = 'http://localhost:8000/auth';
+  BASE_URL = 'http://localhost:3000/auth';
   NAME_KEY = 'name';
   TOKEN_KEY = 'token';
   private userStore = [];

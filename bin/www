@@ -14,14 +14,14 @@ var forceSsl = require('express-force-ssl');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '8443');
 app.set('port', port);
 
 
 
 //Load the csr and private key
 
-http.createServer(app).listen(8000);
+http.createServer(app).listen(3000);
 app.use(forceSsl);
 var options = {
   key:  fs.readFileSync('certificates/privateKey.key'),
