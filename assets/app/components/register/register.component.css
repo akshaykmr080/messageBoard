@@ -1,0 +1,16 @@
+.error {
+    background-color: lightpink;
+}
+.success {
+    background-color:  lightgreen;
+}
+
+.checking {
+    background-color: lightskyblue;
+}
+
+.center {
+    position: relative;
+    top: 50%;
+    transform: translateX(35%); 
+}

@@ -1,0 +1,50 @@
+
+<div>
+    <mat-card>
+        <mat-card-title >
+          Please register as a new user
+        </mat-card-title>
+        <form [formGroup]="form" (ngSubmit) = "onSubmit()" class="center">
+            <mat-input-container style="width: 350px;">
+              <input type="text" matInput [ngClass]="{'error' : isValid('firstName')}" formControlName="firstName" placeholder="First Name" required>
+            </mat-input-container>
+            <br/>
+            <mat-input-container style="width: 350px;">
+              <input type="text" matInput  [ngClass]="{'error' : isValid('lastName')}" formControlName="lastName" placeholder="Last Name" required>
+            </mat-input-container>
+            <br/>
+            <div> 
+              <div *ngIf="email.status === 'PENDING'" class="checking" style="width: 350px;">
+                Checking...
+              </div>
+              <div *ngIf="email.touched && !email.errors?.invalidEmail && email.status === 'VALID'" class="success" style="width: 350px;">
+                Email is available!
+              </div>
+
+              <div *ngIf="email.errors && email.errors.emailTaken" class="error" style="width: 350px;">
+                Email already taken
+              </div>
+
+              <div *ngIf="email.touched && email.errors?.invalidEmail" class="error" style="width: 350px;">
+                Email is not valid
+              </div>
+            </div>
+            <mat-input-container style="width: 350px;">
+              <input type="email" matInput  [ngClass]="{'error' : isValid('email')}" formControlName="email" placeholder="Email" required>
+            </mat-input-container>
+            <br/>
+            <mat-input-container style="width: 350px;">
+              <input type="password" matInput [ngClass]="{'error' : isValid('password')}" formControlName="password" placeholder="password" required>
+            </mat-input-container>
+            <br/>
+            <mat-input-container style="width: 350px;">
+              <input type="password" matInput [ngClass]="{'error' : isValid('confirmPassword')}" formControlName="confirmPassword" placeholder="confirmPassword" required>
+            </mat-input-container>
+            <br/>
+            <span *ngIf="confirmPassword.valid && form.invalid && form.errors?.mismatchedFields">Passwords do not match</span>
+            <br/>
+            <button mat-raised-button color="primary" [disabled] = "!form.touched || !form.valid">Register</button>
+        </form>
+
+    </mat-card>
+</div>

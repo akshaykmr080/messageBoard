@@ -1,0 +1,27 @@
+<h3 *ngIf="name && name == auth.name"> Your messages</h3>
+<h3 *ngIf="name && name != auth.name"> Messages from {{name}}</h3>
+<div  *ngFor="let message of webService.messagesObservable | async; let i = index">
+    <mat-card class="card">
+      
+        <div style="height:70px">
+          <div style="width:90%; float:left; height:70px">
+            <mat-card-title style="cursor:pointer" [routerLink]="['/messages', message.owner]">
+              {{message.owner}}
+            </mat-card-title>
+            <mat-card-content>
+              {{message.message}}
+            </mat-card-content>
+          </div>
+          
+
+          <div style="width:10%; float:left; height:70px; cursor: pointer" *ngIf="message.userId == auth.userId">
+            <mat-card-content>
+              <i class="material-icons" (click)="deleteMessage(i)">delete</i>
+            </mat-card-content>
+          </div>
+        </div>
+        
+      
+    </mat-card>
+</div>
+
