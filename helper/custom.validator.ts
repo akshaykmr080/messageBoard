@@ -5,10 +5,11 @@ import { AbstractControl } from '@angular/forms';
 export class CustomValidators {
   static emailTakenValidator(auth: AuthService) {
     return (control: AbstractControl) => {
-        
-      return auth.checkEmailTaken(control.value).then(res => {
-          console.log(res)
-        return res ? { emailTaken: true } : null;
+      console.log(control.value)
+      return auth.checkEmailTaken(control.value).map(res => {
+        let taken = res.json().emailTaken;
+        console.log(taken)
+        return taken ? { emailTaken: true } : null;
       });
     };
   }

@@ -28,4 +28,18 @@ auth.post('/login', (req,res) => {
     
 });
 
+auth.post('/checkEmail', (req, res) => {
+    console.log("HAHAHAH")
+    console.log(req)
+    var user = users.find(user => user.email === req.body.email);
+    if(user){
+        console.log('user found')
+        return res.send({emailTaken: true});
+    }
+    else{
+        console.log('email not found')
+       return res.send({emailTaken: false});
+    }
+});
+
 module.exports = auth;

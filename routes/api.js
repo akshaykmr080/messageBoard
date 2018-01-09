@@ -25,6 +25,7 @@ api.get('/messages', authenticate, (req,res) => {
 
 api.get('/users/me', authenticate, (req,res) => {
     var user = users[req.userId];
+    if(!user) return res.send(401)
     var resData = {
         firstName: user.firstName,
         lastName: user.lastName,

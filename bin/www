@@ -7,7 +7,9 @@
 var app = require('../app');
 var debug = require('debug')('node-rest:server');
 var http = require('http');
-
+var https = require('https');
+var fs = require('fs');
+var forceSsl = require('express-force-ssl');
 /**
  * Get port from environment and store in Express.
  */
@@ -15,11 +17,22 @@ var http = require('http');
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
+
+
+//Load the csr and private key
+
+http.createServer(app).listen(8000);
+app.use(forceSsl);
+var options = {
+  key:  fs.readFileSync('certificates/privateKey.key'),
+  cert: fs.readFileSync('certificates/certificate.crt')
+};
+
 /**
- * Create HTTP server.
+ * Create HTTPS server.
  */
 
-var server = http.createServer(app);
+var server = https.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.

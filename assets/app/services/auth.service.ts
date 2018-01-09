@@ -13,7 +13,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class AuthService {
 
-  BASE_URL = 'http://localhost:3000/auth';
+  BASE_URL = 'http://localhost:8000/auth';
   NAME_KEY = 'name';
   TOKEN_KEY = 'token';
   private userStore = [];
@@ -72,11 +72,7 @@ export class AuthService {
   }
 
   checkEmailTaken(email){
-    //return this.http.get(this.BASE_URL + '/checkEmail', email).toPromise()
-    return new Promise((resolve, reject) => {
-      if(email === 'abc@gmail.com') resolve(true);
-      else resolve(false);
-    })
+    return this.http.post(this.BASE_URL + '/checkEmail', {email})
   }
 
   login(user) {

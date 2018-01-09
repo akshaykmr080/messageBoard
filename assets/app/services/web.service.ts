@@ -9,7 +9,7 @@ import {MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class WebService {
-  BASE_URL  = 'http://localhost:3000/api';
+  BASE_URL  = 'http://localhost:8000/api';
 
   private messagesStore = [];
 
