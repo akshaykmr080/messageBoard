@@ -9,8 +9,8 @@ import {MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class WebService {
-  BASE_URL  = 'http://localhost:3000/messages';
-  BASE_USER_URL = 'http://localhost:3000/users';
+  BASE_URL  = 'https://floating-ravine-87480.herokuapp.com/messages';
+  BASE_USER_URL = 'https://floating-ravine-87480.herokuapp.com/users';
   private messagesStore = [];
 
   private messageSubject = new Subject();
