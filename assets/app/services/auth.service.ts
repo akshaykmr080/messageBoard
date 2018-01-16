@@ -18,7 +18,7 @@ export class AuthService {
   TOKEN_KEY = 'token';
   private userStore = [];
   private userSubject = new Subject();
-  userId = null;
+  private userId = null;
   userObservable = this.userSubject.asObservable();
 
   constructor(private http: Http,  private router: Router) { }
@@ -32,6 +32,9 @@ export class AuthService {
     return new RequestOptions({headers: header});
   }
 
+  get userIdData() {
+    return this.userId;
+  }
   get isAuthenticated(){
     if ( localStorage.getItem(this.TOKEN_KEY) ) {
       return true;
@@ -47,7 +50,7 @@ export class AuthService {
     } 
     else{
       this.userStore = [user];
-      this.userId = user.userId;
+      this.userId = user.userId || user._id;
     } 
     this.userSubject.next(this.userStore);
   }
@@ -55,7 +58,7 @@ export class AuthService {
   register(user) {
     delete user.confirmPassword;
     this.http.post(this.BASE_URL + '/register', user).subscribe(res => {
-      var authResponse = res.json();
+    var authResponse = res.json();
 
       if(!authResponse)
         return;
@@ -68,6 +71,7 @@ export class AuthService {
     localStorage.setItem(this.TOKEN_KEY, authResponse.token);
     localStorage.setItem(this.NAME_KEY, authResponse.username);
     this.pushUser(authResponse);
+    
     this.router.navigate(['/']);
   }
 
@@ -78,15 +82,15 @@ export class AuthService {
   login(user) {
 
     return this.http.post(this.BASE_URL + '/login', user).switchMap(res => {
-      //console.log('reached here');
       var authResponse = res.json();
-
+      
       if(!authResponse)
         return Observable.of(false);
 
       this.authenticate(authResponse);
       return Observable.of(true);
     }).catch((e) => {
+      
       this.pushUser(null);
       return Observable.of(false);
     });

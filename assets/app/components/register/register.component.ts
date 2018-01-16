@@ -1,4 +1,4 @@
-import { CustomValidators } from './../../../../helper/custom.validator';
+import { CustomValidators } from './../../helper/custom.validator';
 import { AuthService } from './../../services/auth.service';
 import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';

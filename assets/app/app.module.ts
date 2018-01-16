@@ -49,7 +49,7 @@ import { UserComponent } from './components/user/user.component';
         canActivate: [Authguard]
       },
       {
-        path: 'messages/:name',
+        path: 'messages/:id',
         component: MessagesComponent,
         canActivate: [Authguard]
       },

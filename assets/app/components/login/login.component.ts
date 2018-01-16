@@ -1,4 +1,3 @@
-import { PasswordValidators } from './../../../../helper/custom.validators';
 import { AuthService } from './../../services/auth.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';

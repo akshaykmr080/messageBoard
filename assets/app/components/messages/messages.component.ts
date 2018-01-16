@@ -11,21 +11,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MessagesComponent implements OnInit {
   
-  constructor(private webService: WebService, private route: ActivatedRoute, private auth: AuthService) { }
+  constructor(public webService: WebService, private route: ActivatedRoute, public auth: AuthService) { }
 
+  userid = undefined;
   name = undefined;
-  async ngOnInit() {
-    this.name  = this.route.snapshot.params.name;
-    if ( !this.name || this.name.length == 0) {
+  ngOnInit() {
+    this.userid  = this.route.snapshot.params.id;
+    if ( !this.userid || this.userid.length == 0) {
       this.webService.getMessages();
     } else {
-      console.log(name);
-      this.webService.getMessageFromUser(this.name);
+      
+      this.webService.getUserName(this.userid)
+      .then(userName => this.name = userName)
+      .catch((err) => console.log(err));
+
+      this.webService.getMessageFromUser(this.userid);
     }
-    // this.webService.messagesObservable.subscribe(messages => this.messages = messages);
   }
 
-  deleteMessage(index){
-    this.webService.deleteMessage(index)
+  deleteMessage(id){
+    this.webService.deleteMessage(id)
   }
 }

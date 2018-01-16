@@ -1,19 +1,18 @@
 <mat-toolbar color="primary" >
   Message Board
-  <div *ngIf="authUser; else login">
-    <button mat-button routerLink="/" >Home</button>
-    <button mat-button routerLink="/messages">Messages</button>
-    <span style="flex: 1 1 auto"></span>
-    <button mat-button routerLink="/users/me">Welcome {{auth.name | lowercase}}</button>
-    <button  mat-button (click)="auth.logout()">Logout</button>
+  <div class="display-block" *ngIf="authUser; else login">
+      <div class="display">
+        <button mat-button routerLink="/" >Home</button>
+        <button mat-button routerLink="/messages">Messages</button>
+      </div>
+      <div class="display" style="float:right;">
+        <button mat-button routerLink="/users/me">Welcome {{auth.name | lowercase}}</button>
+        <button  mat-button (click)="auth.logout()">Logout</button>
+      </div> 
   </div>
-    
-  
-  
-  
-  
   <ng-template #login style="float:right;">
-   <button mat-button routerLink="/login">Login</button>
+    <span style="flex: 1 1 auto"></span>
+    <button mat-button routerLink="/login">Login</button>
     <button mat-button routerLink="/register">Register</button>
   </ng-template>
   

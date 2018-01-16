@@ -15,7 +15,9 @@ export class Authguard implements CanActivate {
   canActivate(route, state: RouterStateSnapshot) {
 
     return this.webService.getUser().map(user => {
+      
       if (user) {
+        
         this.auth.pushUser(user);
         return true;
       }
@@ -25,14 +27,5 @@ export class Authguard implements CanActivate {
         this.router.navigate(['/login'], { queryParams: { returnUrl: state.url}});
         return Observable.of(false);
     });
-    // return this.auth.user$.
-    // map(user => {
-    //   if (user){
-    //     return true;
-    //   }
-
-    //   this.router.navigate(['/login'], { queryParams: { returnUrl: state.url}});
-    //   return false;
-    // });
   }
 }

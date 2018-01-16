@@ -1,6 +1,6 @@
 var jwt = require('jsonwebtoken');
 var authenticate = (req, res, next) => {
-    console.log('Reaching here')
+    //console.log('Reaching here')
     if(!req.header('x-auth'))
         return res.status(401).send({message:'UnAuthorized request. Token header not present'});
 
@@ -10,7 +10,7 @@ var authenticate = (req, res, next) => {
     if(!payload)
         return res.status(401).send({message:'UnAuthorized request. Token header invalid'});
 
-    req.userId = payload;
+    req.user = payload;
     next();
 }
 

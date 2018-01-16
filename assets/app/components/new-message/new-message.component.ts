@@ -17,6 +17,7 @@ export class NewMessageComponent {
   constructor(private webService: WebService, private auth: AuthService) { }
 
   async post() {
+    //console.log(this.message)
     this.webService.postMessage(this.message);
     this.message.message = '';
   }

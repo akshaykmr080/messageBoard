@@ -10,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserComponent implements OnInit {
   form;
+  invalidLogin = false;
   user = {
     firstname: '',
     lastname: ''
@@ -24,16 +25,19 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.webService.getUser().subscribe(userdata => {
-      console.log('user' + JSON.stringify(userdata, undefined, 2));
-      this.user.firstname = userdata.firstName;
-      this.user.lastname = userdata.lastName;
+      
+      this.user.firstname = userdata.firstname;
+      this.user.lastname = userdata.lastname;
     });
   }
 
   onSubmit() {
-    console.log('submitting');
+    
     this.webService.postUser(this.form.value).subscribe(user => {
-      this.router.navigate(['/']);
+      if(user)
+        this.router.navigate(['/']);
+      else 
+        this.invalidLogin = true;
     });
   }
 

@@ -9,8 +9,8 @@ import {MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class WebService {
-  BASE_URL  = 'http://localhost:3000/api';
-
+  BASE_URL  = 'http://localhost:3000/messages';
+  BASE_USER_URL = 'http://localhost:3000/users';
   private messagesStore = [];
 
   private messageSubject = new Subject();
@@ -20,29 +20,28 @@ export class WebService {
 
   async getMessages() {
     try {
-      //console.log('getting messages')
-      var response =  await this.http.get(this.BASE_URL + '/messages', this.auth.TokenHeader).toPromise();
-      //console.log(response.json())
-      var messages = response.json().messages;
-      //console.log(messages);
+      
+      var response =  await this.http.get(this.BASE_URL + '/get' , this.auth.TokenHeader).toPromise();
+      
+      var messages = response.json().obj;
+      
+      
       this.messagesStore = messages;
       this.messageSubject.next(this.messagesStore);
-      //this.getUser();
+      
       return response;
     } catch (error) {
-      console.log(error);
+      
       this.errorHandler('Unable to get messages');
-      //this.sb.open('unable to get messages', 'close', {duration: 2000});
-      //alert('Unable to fetch messages');
     }
   }
 
-  getMessageFromUser (name) {
-    if(!name) return;
+  getMessageFromUser (userId) {
+    if(!userId) return;
 
-    this.http.get(this.BASE_URL + '/messages/' + name, this.auth.TokenHeader).subscribe(response => {
-        console.log(response.json().messageData);
-        this.messagesStore = response.json().messageData;
+    this.http.get(this.BASE_URL + '/' + userId, this.auth.TokenHeader).subscribe(response => {
+        
+        this.messagesStore = response.json().obj;
         this.messageSubject.next(this.messagesStore);
     }, (err) => {
         this.messagesStore = [];
@@ -52,34 +51,54 @@ export class WebService {
   }
 
 
-  async postMessage(message) {
+   postMessage(message) {
     try {
-      var response = await this.http.post(this.BASE_URL + '/messages', message, this.auth.TokenHeader).toPromise();
-      console.log(response.json())
-      this.messagesStore.push(response.json());
-      this.messageSubject.next(this.messagesStore);
-      // return response.json();
+      var messageData = JSON.stringify(message);
+      
+      var response = this.http.post(this.BASE_URL + '/add' , message, this.auth.TokenHeader).subscribe(response => {
+        this.messagesStore.push(response.json().obj);
+        this.messageSubject.next(this.messagesStore);
+        return response.json();
+      })
     } catch (error) {
       this.errorHandler('unable to post message');
     }
   }
 
-  async deleteMessage(index){
-    var res = await this.http.delete(this.BASE_URL+ '/messages/'+ index , this.auth.TokenHeader).toPromise();
-    this.messagesStore.splice(index, 1);
-    this.messageSubject.next(this.messagesStore);
+  async deleteMessage(id){
+
+    try{
+      var res = await this.http.delete(this.BASE_URL+ '/'+ id , this.auth.TokenHeader).toPromise();
+      var message = this.messagesStore.find(message => message._id == id);
+      if(!message) return;
+      this.messagesStore.splice(this.messagesStore.indexOf(message), 1);
+      this.messageSubject.next(this.messagesStore);
+    } catch(error){
+      this.errorHandler('unable to delete message');
+    }
+    
     
   }
 
 
   getUser() {
-    return this.http.get(this.BASE_URL + '/users/me', this.auth.TokenHeader).map(res => { return res.json()});
+    return this.http.get(this.BASE_USER_URL + '/me', this.auth.TokenHeader).map(res => res.json().obj);
   }
 
   postUser(userData) {
-    return this.http.post(this.BASE_URL + '/users/me', userData, this.auth.TokenHeader).map(res =>  res.json());
+    return this.http.post(this.BASE_USER_URL + '/me', userData, this.auth.TokenHeader).map(res =>  res.json().obj);
   }
 
+  async getUserName(id){
+    try {
+      var res = await this.http.get(this.BASE_USER_URL + '/name' + '/' + id, this.auth.TokenHeader).toPromise();
+      return res.json().obj;
+    } catch(error) {
+      this.errorHandler('failed to retrieve username');
+    }
+     
+
+  }
   private errorHandler(message) {
     this.sb.open(message, 'close', {duration: 2000});
   }
